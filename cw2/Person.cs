@@ -16,7 +16,7 @@ namespace cw2
         public string studies { get; set; }
         public string mode { get; set; }
 
-        public virtual string ToString()
+        public string ToString()
         {
             return "index: " + index
                 + " Imie " + firstName
