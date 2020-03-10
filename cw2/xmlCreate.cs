@@ -6,28 +6,37 @@ using System.Xml;
 namespace cw2
 {
     public class xmlCreate
-    {
+    {  
+        public int[] numberOfStudents { get; set; }
         public void createFile(List<Person> list)
         {
             XmlTextWriter writer = new XmlTextWriter("product.xml", System.Text.Encoding.UTF8);
             writer.WriteStartDocument(true);
             writer.Formatting = Formatting.Indented;
             writer.Indentation = 2;
-            writer.WriteStartElement("uczelnia \n" +
-                "createdAt= \"" +DateTime.Today.ToString() + "\"\n" +
-                "author=\"Bartłomiej Stocki\"");
+            writer.WriteStartElement("uczelnia");
+            writer.WriteAttributeString("\ncreatedAt", DateTime.Today.Date.ToString("d"));
+            writer.WriteAttributeString("\nauthor", "Bartłomiej Stocki");
             writer.WriteStartElement("Studenci");
             foreach (Person person in list)
             {
                 createNode(person.index, person.firstName, person.lastName, person.birth, person.email, person.mother, person.father, person.studies, person.mode, writer);
             }
-            //writer.WriteEndElement();
-            //writer.WriteStartElement("activeStudies");
-            //writer.WriteStartElement("studies name = C numberOfStudents= 999");
-            //writer.WriteStartElement("studies name = D numberOfStudents= 555");
-            //writer.WriteEndElement();
+            writer.WriteEndElement();
+            writer.WriteStartElement("studies");
 
-            writer.WriteFullEndElement();
+            writer.WriteStartElement("studies");
+            writer.WriteAttributeString("name", "0");
+            writer.WriteAttributeString("numberOfStudents", "0");
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("studies");
+            writer.WriteAttributeString("name", "0");
+            writer.WriteAttributeString("numberOfStudents", "0");
+            writer.WriteEndElement();
+            writer.WriteEndElement();
+
+            writer.WriteEndElement();
 
             writer.Close();
 
@@ -36,7 +45,11 @@ namespace cw2
 
         private void createNode(string index, string name, string lastName, DateTime birth, string email, string mother, string father, string studies, string mode, XmlTextWriter writer)
         {
-            writer.WriteStartElement("student indexNumber=\"s" + index.ToString() + "\"");
+
+
+
+            writer.WriteStartElement("student");
+            writer.WriteAttributeString("indexNumber", index.ToString());
             writer.WriteStartElement("fname");
             writer.WriteString(name);
             writer.WriteEndElement();
@@ -46,7 +59,7 @@ namespace cw2
             writer.WriteEndElement();
 
             writer.WriteStartElement("birthdate");
-            writer.WriteString(birth.Date.ToString());
+            writer.WriteString(birth.Date.ToString("d"));
             writer.WriteEndElement();
 
             writer.WriteStartElement("email");
@@ -71,7 +84,7 @@ namespace cw2
             writer.WriteEndElement();
 
             writer.WriteEndElement();        
-            writer.WriteFullEndElement();        
+            writer.WriteEndElement();        
         }
     }
 }
