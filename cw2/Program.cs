@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -9,25 +10,33 @@ namespace cw2
     {
         public static void Main(string[] args)
         {
+            //lokalizacja pliku csv
             var csvFile = @"C:\Users\Steking\Desktop\dane.csv";
             //var xmlFile = args[1];
+
+            //lokalizacja pliku logFile
             var logFile = @"C:\Users\Steking\Desktop\log.txt";
-
-            //zapisywanie do logu
-
 
             var lines = File.ReadLines(csvFile);
 
+            //listy do wypisywania osob w log i xml
             List<Person> personList = new List<Person>();
             List<Person> errorList = new List<Person>();
             var counter = 0;
             var tmp2 = new Person();
+
+            Hashtable std = new Hashtable();
+            int numOfStudents = 0;
+
+            int[] counterOfStudents = new int[2]; 
 
             foreach (var line in lines)
             {
                 counter = 0;
                 var readed = line.Split(",");
 
+
+                //sprawdzenie czy jest 9 kolumn
                 for (int i = 0; i < readed.Length; i++)
                 {
                     if (!(readed[i].Length == 0))
@@ -79,8 +88,23 @@ namespace cw2
                 }
             }
 
+            foreach (Person person in personList)
+            {
+                if (!std.ContainsKey(person.studies))
+                {
+                    foreach (Person tmpP in personList)
+                    {
+                        if (tmpP.studies == person.studies)
+                        {
+                            numOfStudents++;
+                        }
+                    }
+                    std.Add(person.studies, numOfStudents);
+                }
+            }
+
             xmlCreate tmpX = new xmlCreate();
-            tmpX.createFile(personList);
+            tmpX.createFile(personList, std);
 
         }
     }

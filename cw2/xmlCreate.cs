@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
@@ -8,7 +9,7 @@ namespace cw2
     public class xmlCreate
     {  
         public int[] numberOfStudents { get; set; }
-        public void createFile(List<Person> list)
+        public void createFile(List<Person> list, Hashtable std)
         {
             XmlTextWriter writer = new XmlTextWriter("product.xml", System.Text.Encoding.UTF8);
             writer.WriteStartDocument(true);
@@ -25,15 +26,13 @@ namespace cw2
             writer.WriteEndElement();
             writer.WriteStartElement("studies");
 
-            writer.WriteStartElement("studies");
-            writer.WriteAttributeString("name", "0");
-            writer.WriteAttributeString("numberOfStudents", "0");
-            writer.WriteEndElement();
+            foreach (DictionaryEntry de in std) {
+                writer.WriteStartElement("studies");
+                writer.WriteAttributeString("name", de.Key.ToString());
+                writer.WriteAttributeString("numberOfStudents", de.Value.ToString());
+                writer.WriteEndElement();
+            }
 
-            writer.WriteStartElement("studies");
-            writer.WriteAttributeString("name", "0");
-            writer.WriteAttributeString("numberOfStudents", "0");
-            writer.WriteEndElement();
             writer.WriteEndElement();
 
             writer.WriteEndElement();
@@ -45,9 +44,6 @@ namespace cw2
 
         private void createNode(string index, string name, string lastName, DateTime birth, string email, string mother, string father, string studies, string mode, XmlTextWriter writer)
         {
-
-
-
             writer.WriteStartElement("student");
             writer.WriteAttributeString("indexNumber", index.ToString());
             writer.WriteStartElement("fname");
