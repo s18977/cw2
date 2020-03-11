@@ -6,22 +6,24 @@ using System.Xml;
 
 namespace cw2
 {
-    public class xmlCreate
+    public class CreateXml
     {  
         public int[] numberOfStudents { get; set; }
-        public void createFile(List<Person> list, Hashtable std)
+        public void CreateFile(List<Person> list, Hashtable std, string xmlPath)
         {
-            XmlTextWriter writer = new XmlTextWriter("product.xml", System.Text.Encoding.UTF8);
+            XmlTextWriter writer = new XmlTextWriter(xmlPath, System.Text.Encoding.UTF8);
             writer.WriteStartDocument(true);
             writer.Formatting = Formatting.Indented;
             writer.Indentation = 2;
+
             writer.WriteStartElement("uczelnia");
             writer.WriteAttributeString("\ncreatedAt", DateTime.Today.Date.ToString("d"));
             writer.WriteAttributeString("\nauthor", "Bartłomiej Stocki");
             writer.WriteStartElement("Studenci");
+
             foreach (Person person in list)
             {
-                createNode(person.index, person.firstName, person.lastName, person.birth, person.email, person.mother, person.father, person.studies, person.mode, writer);
+                CreateNode(person.index, person.firstName, person.lastName, person.birth, person.email, person.mother, person.father, person.studies, person.mode, writer);
             }
             writer.WriteEndElement();
             writer.WriteStartElement("studies");
@@ -42,10 +44,10 @@ namespace cw2
             Console.WriteLine("XML File Created!");
         }
 
-        private void createNode(string index, string name, string lastName, DateTime birth, string email, string mother, string father, string studies, string mode, XmlTextWriter writer)
+        private void CreateNode(string index, string name, string lastName, DateTime birth, string email, string mother, string father, string studies, string mode, XmlTextWriter writer)
         {
             writer.WriteStartElement("student");
-            writer.WriteAttributeString("indexNumber", index.ToString());
+            writer.WriteAttributeString("indexNumber", "s" + index.ToString());
             writer.WriteStartElement("fname");
             writer.WriteString(name);
             writer.WriteEndElement();

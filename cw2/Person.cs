@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace cw2
 {
     public class Person
     {
+        [JsonPropertyName("indexNumber")]
         public string index { get; set; }
+        [JsonPropertyName("fname")]
         public string firstName { get; set; }
+        [JsonPropertyName("lname")]
         public string  lastName { get; set; }
+        [JsonPropertyName("birthdate")]
         public DateTime birth { get; set; }
+        [JsonPropertyName("email")]
         public string email { get; set; }
+        [JsonPropertyName("mothersName")]
         public string mother { get; set; }
+        [JsonPropertyName("fathersName")]
         public string father { get; set; }
         public string studies { get; set; }
         public string mode { get; set; }

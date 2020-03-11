@@ -10,16 +10,46 @@ namespace cw2
     {
         public static void Main(string[] args)
         {
-            //lokalizacja pliku csv
-            var csvFile = @"C:\Users\Steking\Desktop\dane.csv";
-            //var xmlFile = args[1];
+            string csvFile;
+            string xmlPath;
+            string logFile = "log.txt";
+            string typeNeeded;
 
-            //lokalizacja pliku logFile
-            var logFile = @"C:\Users\Steking\Desktop\log.txt";
+            //switch (args.Length)
+            //{
+            //    case 3:
+            //        csvFile = args[0];
+            //        xmlPath = args[1];
+            //        typeNeeded = args[2];
+            //        break;
 
+            //    case 2:
+            //        csvFile = args[0];
+            //        xmlPath = args[1];
+            //        typeNeeded = "xml";
+            //        break;
+
+            //    case 1:
+            //        csvFile = args[0];
+            //        xmlPath = "result.xml";
+            //        typeNeeded = "xml";
+            //        break;
+
+            //    default:
+            //         csvFile = "data.csv";
+            //         xmlPath = "result.txt";
+            //         typeNeeded = "xml";
+            //        break;
+            //}
+
+            csvFile = @"C:\Users\Steking\Desktop\dane.csv";
+            xmlPath = @"C:\Users\Steking\Desktop\result.json";
+            typeNeeded = "json";
+            
+            //odczyt z pliku
             var lines = File.ReadLines(csvFile);
 
-            //listy do wypisywania osob w log i xml
+            //listy do wypisywania osob w log i result
             List<Person> personList = new List<Person>();
             List<Person> errorList = new List<Person>();
             var counter = 0;
@@ -27,8 +57,6 @@ namespace cw2
 
             Hashtable std = new Hashtable();
             int numOfStudents = 0;
-
-            int[] counterOfStudents = new int[2]; 
 
             foreach (var line in lines)
             {
@@ -61,7 +89,6 @@ namespace cw2
 
                 if (tmp2.index == readed[4] && counter != 0)
                 {
-                    //Console.WriteLine("Kopia");
                     errorList.Add(tmp);
                 }
                 else
@@ -75,7 +102,6 @@ namespace cw2
                         errorList.Add(tmp);
                     }
                 }
-
                 tmp2 = tmp;
             }
 
@@ -88,6 +114,7 @@ namespace cw2
                 }
             }
 
+            //tworzenie tabeli przedmiotow na uczelni wraz z liczba studentow
             foreach (Person person in personList)
             {
                 if (!std.ContainsKey(person.studies))
@@ -103,9 +130,17 @@ namespace cw2
                 }
             }
 
-            xmlCreate tmpX = new xmlCreate();
-            tmpX.createFile(personList, std);
 
+            if (typeNeeded.Contains("xml"))
+            {
+                CreateXml tmpX = new CreateXml();
+                tmpX.CreateFile(personList, std, xmlPath);
+            }
+            else if (typeNeeded.Contains("json"))
+            {
+                CreateJson tmpJ = new CreateJson();
+                tmpJ.CreateFile(personList, std, xmlPath);
+            }
         }
     }
 }
