@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace cw2
 {
-    public class Person
+    public class Student
     {
         [JsonPropertyName("indexNumber")]
         public string index { get; set; }

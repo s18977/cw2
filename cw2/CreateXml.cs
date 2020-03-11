@@ -9,9 +9,9 @@ namespace cw2
     public class CreateXml
     {  
         public int[] numberOfStudents { get; set; }
-        public void CreateFile(List<Person> list, Hashtable std, string xmlPath)
+        public void CreateFile(List<Student> list, Hashtable std, string xmlPath)
         {
-            XmlTextWriter writer = new XmlTextWriter(xmlPath, System.Text.Encoding.UTF8);
+            XmlTextWriter writer = new XmlTextWriter(xmlPath + @"\result.xml", System.Text.Encoding.UTF8);
             writer.WriteStartDocument(true);
             writer.Formatting = Formatting.Indented;
             writer.Indentation = 2;
@@ -21,7 +21,7 @@ namespace cw2
             writer.WriteAttributeString("\nauthor", "Bartłomiej Stocki");
             writer.WriteStartElement("Studenci");
 
-            foreach (Person person in list)
+            foreach (Student person in list)
             {
                 CreateNode(person.index, person.firstName, person.lastName, person.birth, person.email, person.mother, person.father, person.studies, person.mode, writer);
             }

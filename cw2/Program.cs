@@ -57,18 +57,29 @@ namespace cw2
             catch (FileNotFoundException f)
             {
                 Console.WriteLine("Plik data nie istnieje");
-            }catch (ArgumentException ae)
+                using (StreamWriter sw = new StreamWriter(logFile))
+                {
+                        sw.WriteLine("Błąd odczytu pliku data! " + csvFile + " " + DateTime.Now.ToString());
+                }
+                return;
+
+            }catch (ArgumentException argument)
             {
                 Console.WriteLine("Podana sciezka jest niepoprawna");
+                using (StreamWriter sw = new StreamWriter(logFile))
+                {
+                    sw.WriteLine("Podana ścieżka jest nieprawidłowa! " + neededFilePath + " " + DateTime.Now.ToString() + "\n" + argument.Message.ToString());
+                }
+                return;
             }
 
             var lines = File.ReadLines(csvFile);
 
             //listy do wypisywania osob w log i result
-            List<Person> personList = new List<Person>();
-            List<Person> errorList = new List<Person>();
+            List<Student> personList = new List<Student>();
+            List<Student> errorList = new List<Student>();
             var counter = 0;
-            var tmp2 = new Person();
+            var tmp2 = new Student();
 
             Hashtable std = new Hashtable();
             int numOfStudents = 0;
@@ -89,7 +100,7 @@ namespace cw2
 
                 }
 
-                Person tmp = new Person
+                Student tmp = new Student
                 {
                     firstName = readed[0],
                     lastName = Regex.Replace(readed[1], @"[\d-]", ""),
@@ -123,18 +134,18 @@ namespace cw2
             //zapis bledow do pliku
             using (StreamWriter sw = new StreamWriter(logFile))
             {
-                foreach (Person person in errorList)
+                foreach (Student person in errorList)
                 {
                     sw.WriteLine(person.ToString());
                 }
             }
 
             //tworzenie tabeli przedmiotow na uczelni wraz z liczba studentow
-            foreach (Person person in personList)
+            foreach (Student person in personList)
             {
                 if (!std.ContainsKey(person.studies))
                 {
-                    foreach (Person tmpP in personList)
+                    foreach (Student tmpP in personList)
                     {
                         if (tmpP.studies == person.studies)
                         {

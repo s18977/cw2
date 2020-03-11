@@ -9,7 +9,7 @@ namespace cw2
     class CreateJson
     {
         public Uczelnia uczelnia { get; set; }
-        public void CreateFile(List<Person> person, Hashtable std, string jsonPath)
+        public void CreateFile(List<Student> person, Hashtable std, string jsonPath)
         {
             var options = new JsonSerializerOptions
             {
@@ -30,7 +30,7 @@ namespace cw2
 
             var jsonString = JsonSerializer.Serialize(tmp, options);
 
-            File.WriteAllText(jsonPath, jsonString);
+            File.WriteAllText(jsonPath + @"\result.json", jsonString);
 
             Console.WriteLine("JSON file created!");
         }
