@@ -11,42 +11,57 @@ namespace cw2
         public static void Main(string[] args)
         {
             string csvFile;
-            string xmlPath;
+            string neededFilePath;
             string logFile = "log.txt";
             string typeNeeded;
 
-            //switch (args.Length)
-            //{
-            //    case 3:
-            //        csvFile = args[0];
-            //        xmlPath = args[1];
-            //        typeNeeded = args[2];
-            //        break;
+            switch (args.Length)
+            {
+                case 3:
+                    csvFile = args[0];
+                    neededFilePath = args[1];
+                    typeNeeded = args[2];
+                    break;
 
-            //    case 2:
-            //        csvFile = args[0];
-            //        xmlPath = args[1];
-            //        typeNeeded = "xml";
-            //        break;
+                case 2:
+                    csvFile = args[0];
+                    neededFilePath = args[1];
+                    typeNeeded = "xml";
+                    break;
 
-            //    case 1:
-            //        csvFile = args[0];
-            //        xmlPath = "result.xml";
-            //        typeNeeded = "xml";
-            //        break;
+                case 1:
+                    csvFile = args[0];
+                    neededFilePath = "result.xml";
+                    typeNeeded = "xml";
+                    break;
 
-            //    default:
-            //         csvFile = "data.csv";
-            //         xmlPath = "result.txt";
-            //         typeNeeded = "xml";
-            //        break;
-            //}
+                default:
+                    csvFile = "data.csv";
+                    neededFilePath = "result.txt";
+                    typeNeeded = "xml";
+                    break;
+            }
 
-            csvFile = @"C:\Users\Steking\Desktop\dane.csv";
-            xmlPath = @"C:\Users\Steking\Desktop\result.json";
-            typeNeeded = "json";
-            
             //odczyt z pliku
+            //sprawdzenie czy sciezka i plik jest taka sama 
+            try
+            {
+                if (!File.Exists(csvFile))
+                {
+                    throw new FileNotFoundException();
+                }else if (!Directory.Exists(neededFilePath))
+                {
+                    throw new ArgumentException();
+                }
+            }
+            catch (FileNotFoundException f)
+            {
+                Console.WriteLine("Plik data nie istnieje");
+            }catch (ArgumentException ae)
+            {
+                Console.WriteLine("Podana sciezka jest niepoprawna");
+            }
+
             var lines = File.ReadLines(csvFile);
 
             //listy do wypisywania osob w log i result
@@ -134,12 +149,12 @@ namespace cw2
             if (typeNeeded.Contains("xml"))
             {
                 CreateXml tmpX = new CreateXml();
-                tmpX.CreateFile(personList, std, xmlPath);
+                tmpX.CreateFile(personList, std, neededFilePath);
             }
             else if (typeNeeded.Contains("json"))
             {
                 CreateJson tmpJ = new CreateJson();
-                tmpJ.CreateFile(personList, std, xmlPath);
+                tmpJ.CreateFile(personList, std, neededFilePath);
             }
         }
     }

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 
 namespace cw2
@@ -21,7 +20,7 @@ namespace cw2
             {
                 uczelnia = new Uczelnia()
                 {
-                    createdAt = DateTime.Now.ToString(),
+                    createdAt = DateTime.Today.Date.ToString("d"),
                     author = "Bartłomiej Stocki",
                     studenci = person,
                     activeStudies = std
